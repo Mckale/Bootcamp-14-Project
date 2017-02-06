@@ -80,7 +80,8 @@ def check_in_student():
             print(d)
             print("--------------------------------")
             print("")
-                #Select Class with Class_ID
+
+            #Select Class with Class_ID
             class_id=input("Select A Class - Enter Class_ID: ")
             var_class_id=int(class_id)
             print("")
@@ -89,14 +90,50 @@ def check_in_student():
             for i in selected_class:
                 print("---|You have selected: ", ''.join(i),"|---")
                 print("")
+
+            #Start Class
+            accepts=input("If you wish to start your class now enter 'YES' : ")
+            if accepts=="YES":
+                print('')
+        
+            tim=(datetime.now().strftime('%d-%b-%Y %H:%M:%S'))
+            curs.execute("UPDATE classes SET Satatus='In Session' WHERE Class_ID=?", (var_class_id,))
+            curs.execute("UPDATE classes SET Time=? WHERE Class_ID=?", (tim,var_class_id,))
+            TABLES.commit()
+
+            print('---|Classes in Session/not in Session|---')
+            print('--------------------------------------------------------')
+            curs.execute('SELECT*FROM classes')
+            [print(": ".join(str(x) for x in(row))) for row in curs.fetchall()]
+            print('--------------------------------------------------------')
+            print('')
+
+            print(''.join(i), "in session")
+            print('')
+            time.sleep(15)
+
+            tim=(datetime.now().strftime('%d-%b-%Y %H:%M:%S'))
+            curs.execute("UPDATE classes SET Satatus='Not In Session' WHERE Class_ID=?", (var_class_id,))
+            curs.execute("UPDATE classes SET Time=? WHERE Class_ID=?", (tim,var_class_id,))
+            TABLES.commit()
+            
+            print('---|Classes in Session/not in Session|---')
+            print('--------------------------------------------------------')
+            curs.execute('SELECT*FROM classes')
+            [print(": ".join(str(x) for x in(row))) for row in curs.fetchall()]
+            print('--------------------------------------------------------')
+            print('')
+            
+            print(''.join(i), "has ended")
+            print('')
+            print("You can now select a different class")
         class_list()
     else:
         print("Wrong credentials/not in register")
         print("Not registered?")
         print("Register your name to get an ID")
+
 check_in_student()
-
-
 
 
 
