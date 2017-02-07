@@ -6,6 +6,7 @@ from time import gmtime, strftime
 import time
 import sys
 import sqlite3
+import tkinter as TK
 
 #SQLite DataTables
 
@@ -108,9 +109,38 @@ def check_in_student():
             print('--------------------------------------------------------')
             print('')
 
+            #Count Doswn Timer
+            def count_down():
+                # start with 2 minutes --> 120 seconds
+                for t in range(120, -1, -1):
+                    # format as 2 digit integers, fills with zero to the left
+                    # divmod() gives minutes, seconds
+                    sf = "{:02d}:{:02d}".format(*divmod(t, 60))
+                    #print(sf)  # test
+                    time_str.set(sf)
+                    root.update()
+                    # delay one second
+                    time.sleep(1)
+            # create root/main window
+            root = TK.Tk()
+            time_str = TK.StringVar()
+            # create the time display label, give it a large font
+            # label auto-adjusts to the font
+            label_font = ('helvetica', 40)
+            TK.Label(root, textvariable=time_str, font=label_font, bg='white', 
+                     fg='blue', relief='raised', bd=3).pack(fill='x', padx=5, pady=5)
+            # create start and stop buttons
+            # pack() positions the buttons below the label
+            TK.Button(root, text='Start Class', command=count_down).pack()
+            #TK.Button(root, text='Class In Progress', command=count_down).pack() 
+            # stop simply exits root window
+            TK.Button(root, text='End Class', command=root.destroy).pack()
+            # start the GUI event loop
+            root.mainloop()
+
             print(''.join(i), "in session")
-            print('')
-            time.sleep(15)
+            #print('')
+            #time.sleep(15)
 
             tim=(datetime.now().strftime('%d-%b-%Y %H:%M:%S'))
             curs.execute("UPDATE classes SET Satatus='Not In Session' WHERE Class_ID=?", (var_class_id,))
