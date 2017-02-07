@@ -22,7 +22,7 @@ student_table()
 def class_table():
     curs.execute("CREATE TABLE IF NOT EXISTS classes(Class_ID INTEGER PRIMARY KEY AUTOINCREMENT,\
                 Class_Name TEXT NOT NULL, Time TEXT, Satatus TEXT NOT NULL)")
-class_table()
+#class_table()
 
 
 #Add student into the database
@@ -44,7 +44,7 @@ def student_add():
         print(names,", You've been Added into the register")
         print("")
         print("Your student ID is ", key)
-student_add()
+#student_add()
 
 
 #Check in a student
@@ -133,11 +133,106 @@ def check_in_student():
         print("Not registered?")
         print("Register your name to get an ID")
 
-check_in_student()
+#check_in_student()
 
+#Remove Student from Class List
 
+def remove_student():
+        print("REMOVE a student from the student list")
+        print('')
+        ID_input=input("Enter the Student_ID of the STUDENT you wish to REMOVE: ")
+        int_ID_input=int(ID_input)
 
+        curs.execute("DELETE FROM students WHERE Class_ID=?", (int_ID_input,))
+        oooh.commit()
 
+        curs.execute('SELECT * FROM students')
+        cls=[(row) for row in curs.fetchall()]
+        dcls=dict(cls)
+        d=""
+        for i in dcls:
+            a=i
+            b=dcls
+            c=str(a)+":"+dcls[i]
+            d=d+c+'\n'
+        print(d)
+#remove_student()
+
+#Add class to the class list
+def add_class():
+    print('')
+    input("ADD class?")
+    class_input=input("Enter the Class you wish to ADD to the CLASS LIST: ")
+    curs.execute('INSERT INTO classes(Class_ID, Class_Name, Satatus)VALUES(null,?,?)',(class_input, 'Not in Session',))
+    TABLES.commit()
+
+    print('')
+    curs.execute("SELECT DISTINCT Class_ID, Class_Name FROM classes")
+    print("_______________________________")
+    print("Class_ID: ", "Class_Name")
+    print("--------:----------------------")
+    cls=[(row) for row in curs.fetchall()]
+    dcls=dict(cls)
+    d=""
+    for i in dcls:
+        a=i
+        b=dcls
+        c="|"+str(a)+"      :  "+dcls[i]
+        d=d+c+'\n'
+    print(d)
+    print("--------------------------------")
+    print("")
+    print(''.join(class_input), "class has been added to the class list")
+    
+#add_class()
+
+#Delete class from the class list
+def delete_class():
+    print("---|Delete a class from the Class list|---")
+    print('')
+    curs.execute("SELECT DISTINCT Class_ID, Class_Name FROM classes")
+    print("_______________________________")
+    print("Class_ID: ", "Class_Name")
+    print("--------:----------------------")
+    cls=[(row) for row in curs.fetchall()]
+    dcls=dict(cls)
+    d=""
+    for i in dcls:
+        a=i
+        b=dcls
+        c="|"+str(a)+"      :  "+dcls[i]
+        d=d+c+'\n'
+    print(d)
+    print("--------------------------------")
+    print("")
+    
+    Class_ID_input=input("Enter the Class_id of the Class you wish to DELETE: ")
+    int_Class_ID_input=int(Class_ID_input)
+    curs.execute("SELECT DISTINCT class_Name From classes WHERE Class_ID=?", (int_Class_ID_input,))
+    _class=[(row) for row in curs.fetchone()]
+    for i in _class:
+        print(''.join(i), "has been deleted")
+    curs.execute("DELETE FROM classes WHERE Class_id=?", (int_Class_ID_input,))
+    TABLES.commit()
+    
+
+    curs.execute("SELECT DISTINCT Class_ID, Class_Name FROM classes")
+    print("_______________________________")
+    print("Class_ID: ", "Class_Name")
+    print("--------:----------------------")
+    cls=[(row) for row in curs.fetchall()]
+    dcls=dict(cls)
+    d=""
+    for i in dcls:
+        a=i
+        b=dcls
+        c="|"+str(a)+"      :  "+dcls[i]
+        d=d+c+'\n'
+    print(d)
+    print("--------------------------------")
+    print("")
+    
+#delete_class()
 
 
 
