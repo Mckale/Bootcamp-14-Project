@@ -93,8 +93,8 @@ def check_in_student():
                 print("")
 
             #Start Class
-            accepts=input("If you wish to start your class now enter 'YES' : ")
-            if accepts=="YES":
+            #accepts=input("If you wish to start your class now enter 'YES' : ")
+            #if accepts=="YES":
                 print('')
         
             tim=(datetime.now().strftime('%d-%b-%Y %H:%M:%S'))
@@ -108,6 +108,7 @@ def check_in_student():
             [print(": ".join(str(x) for x in(row))) for row in curs.fetchall()]
             print('--------------------------------------------------------')
             print('')
+            print(''.join(i), "in session")
 
             #Count Doswn Timer
             def count_down():
@@ -134,11 +135,11 @@ def check_in_student():
             TK.Button(root, text='Start Class', command=count_down).pack()
             #TK.Button(root, text='Class In Progress', command=count_down).pack() 
             # stop simply exits root window
-            TK.Button(root, text='End Class', command=root.destroy).pack()
+            TK.Button(root, text='Exit', command=root.destroy).pack()
             # start the GUI event loop
             root.mainloop()
 
-            print(''.join(i), "in session")
+           
             #print('')
             #time.sleep(15)
 
@@ -263,10 +264,34 @@ def delete_class():
     print("")
     
 #delete_class()
-
-
-
-
+def view_class_list():
+            input("---|Press ENTER to view available classes|---")
+            curs.execute("SELECT DISTINCT Class_ID, Class_Name FROM classes")
+            print("_______________________________")
+            print("Class_ID: ", "Class_Name")
+            print("--------:----------------------")
+            cls=[(row) for row in curs.fetchall()]
+            dcls=dict(cls)
+            d=""
+            for i in dcls:
+                a=i
+                b=dcls
+                c="|"+str(a)+"      :  "+dcls[i]
+                d=d+c+'\n'
+            print(d)
+            print("--------------------------------")
+            print("")
+def view_list_student():
+    curs.execute('SELECT * FROM students')
+    cls=[(row) for row in curs.fetchall()]
+    dcls=dict(cls)
+    d=""
+    for i in dcls:
+        a=i
+        b=dcls
+        c=str(a)+":"+dcls[i]
+        d=d+c+'\n'
+    print(d)
 
 
 
